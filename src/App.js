@@ -1,25 +1,19 @@
-import logo from './logo.svg';
+import React from 'react';
+import faker from 'faker'
 import './App.css';
+
+const data = new Array(10000).fill().map((value, index) => ({ id: index, title: faker.lorem.words(5), body: faker.lorem.sentences(4) }))
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {data.map(((item) => (
+        <div key={item.id} className="post">
+          <h3>{item.title} - {item.id}</h3>
+          <p>{item.body}</p>
+        </div>
+      )))}
     </div>
   );
 }
-
 export default App;
