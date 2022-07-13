@@ -14,17 +14,17 @@ const data = new Array(100).fill().map((value, index) => ({
 function App() {
   return (
     <div>
-      {/* {data.map(((item) => (
+      {data.map(((item) => (
         <div key={item.id} className="post">
           <h3>{item.name} - {item.id}</h3>
           <p>{item.body}</p>
         </div>
-      )))} */}
+      )))}
 
       {/* <ReactPaginate /> */}
       {/* <InfiniteScroll /> */}
       {/* <Virtualized /> */}
-      <Window />
+      {/* <Window /> */}
     </div>
   );
 }

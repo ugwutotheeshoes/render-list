@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { faker } from "@faker-js/faker";
-import InfiniteScroll from "react-infinite-scroll-component";
+import InfiniteScroll from "react-infinite-scroller";
 
 function App() {
   const data = new Array(1000).fill().map((value, index) => ({
@@ -9,42 +9,40 @@ function App() {
     body: faker.lorem.paragraph(8),
   }));
 
-  const [count, setCount] = useState({
-    prev: 0,
-    next: 10,
-  });
-  const [hasMore, setHasMore] = useState(true);
-  const [current, setCurrent] = useState(data.slice(count.prev, count.next));
-  const getMoreData = () => {
-    if (current.length === data.length) {
-      setHasMore(false);
-      return;
+  const showItems = (posts) => {
+    var items = [];
+    for (var i = 0; i < records; i++) {
+      items.push(
+        <div className="post" key={posts[i].id}>
+          <h3>{`${posts[i].name} - ${posts[i].id}`}</h3>
+          <p>{posts[i].body}</p>
+        </div>
+      );
     }
-    setTimeout(() => {
-      setCurrent(current.concat(data.slice(count.prev + 10, count.next + 10)));
-    }, 2000);
-    setCount((prevState) => ({
-      prev: prevState.prev + 10,
-      next: prevState.next + 10,
-    }));
+    return items;
+  };
+  const itemsPerPage = 20;
+  const [hasMore, setHasMore] = useState(true);
+  const [records, setrecords] = useState(itemsPerPage);
+  const loadMore = () => {
+    if (records === data.length) {
+      setHasMore(false);
+    } else {
+      setTimeout(() => {
+        setrecords(records + itemsPerPage);
+      }, 2000);
+    }
   };
 
   return (
     <InfiniteScroll
-      dataLength={current.length}
-      next={getMoreData}
+      pageStart={0}
+      loadMore={loadMore}
       hasMore={hasMore}
-      loader={<h4>Loading...</h4>}
+      loader={<h4 className="loader">Loading...</h4>}
+      useWindow={false}
     >
-      <div>
-        {current &&
-          current.map((item, index) => (
-            <div key={index} className="post">
-              <h3>{`${item.name}-${item.id}`}</h3>
-              <p>{item.body}</p>
-            </div>
-          ))}
-      </div>
+      {showItems(data)}
     </InfiniteScroll>
   );
 }
